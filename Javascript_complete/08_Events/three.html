@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three File</title>
+</head>
+<body>
+    <h1>Muhammad Yusuf</h1>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+
+    <script>
+        // Use 'let' so we can re-assign it later
+        let intervalId;
+
+        const sayDate = function(str) {
+            console.log(str, Date.now());
+        };
+
+        // Start Button Logic
+        document.querySelector("#start").addEventListener('click', function() {
+            // Check if it's already running to prevent multiple timers
+            if (!intervalId) {
+                intervalId = setInterval(sayDate, 1000, "yusuf");
+                console.log("Started");
+            }
+        });
+
+        // Stop Button Logic
+        document.querySelector("#stop").addEventListener('click', function() {
+            clearInterval(intervalId);
+            intervalId = null; // Reset to null so we can start it again safely
+            console.log("Stopped");
+        });
+    </script>
+</body>
+</html>

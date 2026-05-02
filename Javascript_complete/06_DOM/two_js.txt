@@ -1,0 +1,75 @@
+// <!DOCTYPE html>
+// <html lang="en">
+// <head>
+//     <meta charset="UTF-8">
+//     <title>Dom Learning</title>
+//     <style>
+        
+//     </style>
+// </head>
+// <body>
+//     <div class="bg-black">
+//         <hi id="title" class="heading">Dom Learning </h1>
+//         <hi id="demo" class="head2">Lorem ipsum adipisicing elit.<span style="display:none"> Magnam dolor voluptate veniam ex?</span>  </h1>
+//         <p>Lorem ipsum, dolor sit </p>
+/* <ul>
+            <li>one</li>
+            <li>two</li>
+            <li>three</li>
+        </ul> */
+// </body>
+// </html>
+//**************************************************************** */
+// run it all in browser:
+
+// const x= document.getElementById('title')
+//=> <hi id="title" class="heading">Dom Learning </h1>
+// const x= document.getElementById('title').id => title
+// const x= document.getElementById('title').getAttribute('id')=> title
+
+//  document.getElementById('title').getAttribute('class') => undefined
+//  document.getElementById('title').setAttribute('class' , 'newHeading') => undefined[but it override the class name and change it into neaHeading]
+//  document.getElementById('title').className => heading
+
+// const title = document.getElementById('title')
+ // title.style.backgroungColor = 'green' => style ho jayega
+ // title.style.padding = '15px' => style ho jayega
+
+// ***************************************************************************
+/*
+title => <hi id="title" class="heading">Dom Learning </h1>
+title.textContent => Dom Learning
+title.innerHTML => Dom Learning
+title.innerText => Dom Learning
+  --> difference ?
+  01.textcontent :- it show all text in a perticular(include those which is hided by CSS property)
+  02. innerText :- it only show the visible text on web page
+Eg :=  
+const newTitle = document.getElementyID('demo')
+01.newTitle.innerText =>Lorem ipsum adipisicing elit Magnam dolor voluptate veniam ex?
+02.newTitle.textContent =>Lorem ipsum adipisicing elit.
+03.newTitle.textContent =>Lorem ipsum adipisicing elit.<span style="display:none"> Magnam dolor voluptate veniam ex?</span>  
+
+document.getElementByClassName('heading') => HTML collection[h1#title.heading]
+
+document.querySelector('h1') => give first h1 in HTML file
+document.querySelector('#title') => give h1 with ID = title
+ [same for class ]
+
+document.querySelector('input[type="password']) => return input tag having type password
+
+// if i want to change color of first li in ul
+const myul = document.getSelector('ul')
+const myli = myul.qureySelector('li')
+myli.style.backgroundColor="green" // done [aur bhi kaam kar skte hai]
+
+// QureyAll
+documnent.querySelectorAll('li') => NodeList [li ,li ,li ] --> not pure Array
+ // [
+      0:li,
+      1:li,
+      2:li,
+      lenght:3
+      ]
+
+*/

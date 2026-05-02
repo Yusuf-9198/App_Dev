@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Muhammad Yusuf </h1>
+    <button id="stop">Stop</button>
+</body>
+<script>
+    // Direct way  |=> ye function handlar hat -> means function with No name or call back function
+    // setTimeout(function(){ // setTimeout() function bhi hai aur API ko bhi call karta hai
+    //     console.log("yusuf");
+    // },2000)
+
+    //By reference
+    const sayName =function(){
+        console.log("yusuf");
+    }
+    const changetext =function(){
+        document.querySelector('h1').innerHTML="Mohd yusuf beig"
+    }
+    const changeMe = setTimeout(changetext,2000)
+    // clearTimeout(changeMe)// agr given time se phele rukna chahe tu
+    document.querySelector('#stop').addEventListener('click',function(){
+        clearTimeout(changeMe)
+        console.log("Stopped");
+        
+    })
+
+</script>
+</html>

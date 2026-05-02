@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #212121; color:#fff;">
+    <ul class="lang">
+        <li>java</li>
+    </ul>
+    
+</body>
+<script>
+    function addLang(langName){
+        const li = document.createElement('li');
+        li.innerHTML = ` ${langName}`
+        document.querySelector('.lang').appendChild(li)
+    
+    }
+    addLang("Rube")
+    // more optimise way => without travercing whole tree
+    function addNewLang(langName){
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(langName))
+        document.querySelector('.lang').appendChild(li)
+    
+    }
+    addLang("Python")
+     
+    // Edit
+    const secondLang = document.querySelector("li:nth-child(2)")
+    // secondLang.innerHTML = "Majo"
+    // second approach [without just above line]
+    const newli = document.createElement('li')
+    newli.textContent= "Mojo"
+    secondLang.replaceWith(newli)
+     // remove
+    const lastLang = document.querySelector("li:last-child")
+    lastLang.remove()
+
+
+</script>
+</html>

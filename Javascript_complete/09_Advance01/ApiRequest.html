@@ -1,0 +1,41 @@
+<!-- XMLHttpRequest[read more]:-
+ , the old guard. XMLHttpRequest (XHR) is the seasoned veteran of the web development world.
+  It’s the API that basically gave us the modern web by allowing browsers to send and
+   receive data without a full page refresh—the core of AJAX. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Request</title>
+</head>
+
+<body style="background-color: #212121;">
+<img src="img.png" alt="XTMLHttpRequest">
+
+</body>
+<script>
+    const requestUrl='https://api.github.com/users/hiteshchoudhary'
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', requestUrl)
+    xhr.onreadystatechange = function(){
+        console.log((xhr.readyState));
+        if(xhr.readyState===4){
+            // const data = this.responseText => ye hoga data.follower me undefined ayeg
+            // beacuse ye string
+            // console.log(typeof data );//String
+            const data =JSON.parse( this.responseText)
+            console.log(typeof data );
+            console.log(data.followers);
+            
+            
+        }
+    }// jab jab state change hogi ye execute hoga
+    
+    xhr.send()
+    
+
+</script>
+
+</html>

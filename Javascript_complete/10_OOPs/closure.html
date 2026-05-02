@@ -1,0 +1,61 @@
+<!-- A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). 
+ In other words, a closure gives a function access to its outer scope. In JavaScript, closures are created every time a function is created, 
+ at function creation time. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closure </title>
+</head>
+
+<body style="background-color: #313131;">
+    <button id="orange">Orange</button>
+    <button id="green">Green</button>
+</body>
+<script>
+    // function init() {
+    //     var name = "Mozilla"; // name is a local variable created by init
+    //     function displayName() {
+    //         // displayName() is the inner function, that forms a closure
+    //         console.log(name); // use variable declared in the parent function
+    //     }
+    //     displayName();
+    // }
+    // init();
+    // // agr do inner function hai tu apas me sahre nhi karenge.
+
+    // function makeFunc() {
+    //     const name = "Mozilla";
+    //     function displayName() {
+    //         console.log(name);
+    //     }
+    //     return displayName; // pura ka pura lexcial scope return hoga
+    // }
+
+    // const myFunc = makeFunc(); 
+    // myFunc(); 
+</script>
+<script>
+        // document.getElementById("orange").onclick = function(){
+        //     document.body.style.backgroundColor = `orange`
+        // }
+        // document.getElementById("green").onclick = function(){
+        //     document.body.style.backgroundColor = `green`
+        // }
+
+        function clickHandler(color){
+            // document.body.style.backgroundColor = `${color}`
+
+            return function(){
+                document.body.style.backgroundColor = `${color}`
+            }
+        }
+
+        document.getElementById('orange').onclick = clickHandler("orange")
+        document.getElementById('green').onclick = clickHandler("green")
+
+    </script>
+
+</html>
