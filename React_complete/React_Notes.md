@@ -280,6 +280,20 @@ useEffect(
 > **Use Case:** Storing a timer ID, focusing a text input, or remembering a "previous" value.
 
 ---
+## Evnets Handling
+
+* **user interation**{mouse click, key click etc}
+* **syntehtic event** => cross browser events
+* syntehtic event -> native event -> browser
+
+
+---
+## Form Handling
+* two way to handle
+* 1. Controlled => input is controlled by react state. single source of truth, easy validation, works well with react ecosystem
+  2. Un Controlled => input managed by own State(Dom handle it). Hard to validate, no reactive, less control
+
+---
 
 ### 5. `useMemo` & `useCallback`
 **The Brain-Freeze Prevention (The "Calculated Answer") 🧠**
