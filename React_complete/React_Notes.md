@@ -3,7 +3,7 @@
 ## Why Use React?
 * **JavaScript Library:** 
 -React is a specialized library (not a full framework) for building User Interfaces (UI).
--**SPA** => Single page Application
+* **SPA** => Single page Application
 * **Component-Based** 
 - It breaks the UI into small, isolated pieces called **Components**, making complex frontends easier to manage.
  **Solving Inconsistency:** 
@@ -103,12 +103,40 @@ This is where you will spend almost all of your development time.
 
 > **Pro-Tip:** In Vite, always use the `.jsx` extension for files that contain HTML-like code so the build tool can process it correctly!
 
+
+## Virtual DOM
+* virtual dom is a light weight reprentation of actual dom in memory.
+* window -> document -> html -> body .....
+* **How it works?**
+* 1. Initial render
+  2. state/props update :- We change something so react create new virtual dom
+  3. Diffing :- React compare new and old virtual dom
+  4. Find Minimal changes :- now react update the required changes
+  5. Update real dom
+
+## How React Virtual DOM works under the Hood
+
+
+
+
 ## 3.Hooks
 
 ### What are Hooks?
-**Hooks** are special functions that give your components "memory." 
+**Hooks** are special functions that give your components "memory". A function written as `use_functionName`. 
 
-Usually, when a function finishes running, all its variables disappear. But React components need to remember things (like a counter value or a user's name) even after the function finishes. Hooks allow you to "hook" into React's internal systems to save that data. **You can only call Hooks at the top level of your function (not inside loops or conditions).**
+Usually, when a function finishes running, all its variables disappear. But React components need to remember things (like a counter value or a user's name) even after the function finishes. 
+Hooks allow you to "hook" into React's internal systems to save that data. 
+**You can only call Hooks at the top level of your function (not inside loops or conditions).**
+```javascript
+function(){
+// hooks
+// hooks
+.
+.
+return(jsx)
+}
+
+```
 
 ```javascript
 import React from 'react';
@@ -201,20 +229,31 @@ The most important hook is `useState`. Think of it like a **Variable + a Notific
 
 ### 1. `useState`
 **The Variable + Notification Bell 🔔**
+* use to manage States.
 
 * **The Variable (`state`):** This is the current value or "snapshot."
 * **The Function (`setState`):** The only way to change the value.
+* `setState(state + Incremental_Value)`
 * **The Bell:** When you call the function, it rings a bell to tell React: *"The data changed! Please re-draw the screen!"*
+* `const [state, setState] = useState(Initial_State) `
 
 > **Use Case:** Counters, form inputs, toggles (on/off).
 
 ---
 
 ### 2. `useEffect`
-**The Smart Thermostat (The "Reaction") 🌡️**
-
+**The Smart Thermostat (The "Reaction") 🌡️**. use to run side effect{api cslling, timer, event listner etc} after rendering
+```
+useEffect(
+(call_back) => { // runs on  every render},
+[dependence_Array]
+)
+```
 * **The Effect:** The code you want to run (the "Reaction").
 * **The Dependencies `[]`:** The "Watching Eyes."
+* 1. No dependencies :- runs on each rendering.
+  2. empty dependencies :- runs only when reload(mount).
+  3. with dependencies :- runs when perticular variable changes[Also when reload], runs the code.
 * **The Logic:** You tell React: *"Watch these specific variables. If they change, run my code immediately."*
 
 > **Use Case:** Fetching data from an API, starting a timer, or manually changing the page title.
