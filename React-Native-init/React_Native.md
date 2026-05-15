@@ -2,6 +2,30 @@
 - React Native is an open source framework for building Android and iOS applications using React and the app platform’s native capabilities.
 - React Native allows developers who know React to create native apps. At the same time, native developers can use React Native to gain parity between native platforms by writing common features once.
 
+## 1. Directory Tree & Architecture
+
+Modern Expo uses **file-based routing** within an `app` directory. Folder configurations automatically dictate screen navigation contexts.
+
+```text
+my-notes-app/
+├── app/                  # 📂 Routing Core (File-based navigation pathways)
+│   ├── _layout.tsx       # 📝 Master Frame Layout (Theme contexts, global providers)
+│   ├── index.tsx         # 📱 Root Application Target (e.g., Notes Listing Screen)
+│   ├── edit.tsx          # 📱 Secondary Target View (e.g., Note Editor Screen)
+│   └── +not-found.tsx    # ⚠️ Fallback Error Layer (404 execution handler)
+├── assets/               # 📂 Static Resources (Launch splashes, imagery, typography)
+│   ├── images/
+│   └── fonts/
+├── components/           # 📂 Stateless UI Sub-units (Reusable Note Cards, Custom Buttons)
+│   └── NoteCard.tsx
+├── hooks/                # 📂 Isolated Custom Logic Engines (e.g., useResponsive)
+│   └── useResponsive.ts
+├── constants/            # 📂 Immutable Configuration Matrix (Global color palettes)
+│   └── Colors.ts
+├── app.json              # ⚙️ Application Manifest (Native build instructions)
+├── package.json          # 📦 Package dependencies list & automation script profiles
+└── tsconfig.json         # 🛠️ TypeScript strict evaluation constraints
+
 ## Components
 - **Core Components**
 
@@ -159,7 +183,8 @@ const App = () => (
 
 export default App;
 ```
-- The `pagingEnabled` prop is a simple way to create "slides" or "pages" in your app UI. When you enable it, the scroll view stops at intervals equal to the size of the scroll view, rather than letting the user scroll freely.
+- The `pagingEnabled` prop is a simple way to create "slides" or "pages" in your app UI. When you enable it,
+  the scroll view stops at intervals equal to the size of the scroll view, rather than letting the user scroll freely.
 - While ScrollView works on both, some developers prefer the `ViewPager` component on Android because it provides a more "native" feel for that specific platform's navigation patterns.
 ```javascript
 import React from 'react';
@@ -206,43 +231,65 @@ export default PagingExample;
 - On iOS a ScrollView with a single item can be used to allow the user to zoom content. Set up the maximumZoomScale and minimumZoomScale props and your user will be able to use pinch and expand gestures to zoom in and out.
 ```javascript
 import React from 'react';
-import { ScrollView, Image, StyleSheet, Dimensions } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Dimensions } from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const ZoomableImage = () => {
+export default function ScrollViewExample() {
   return (
-    <ScrollView
-      maximumZoomScale={5}
-      minimumZoomScale={1}
-      contentContainerStyle={styles.container}
-    >
-      <Image
-        source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-    </ScrollView>
+          <ScrollView
+                  // horizontal: Changes scroll direction from vertical (default) to left-to-right
+                  horizontal={true}
+
+                  // pagingEnabled: Snaps the scroll position to multiples of the ScrollView's width
+                  pagingEnabled={true}
+
+                  // showsHorizontalScrollIndicator: Hides the scrollbar track at the bottom of the screen
+                  showsHorizontalScrollIndicator={false}
+
+                  // scrollEventThrottle: Controls how often scroll events trigger while dragging (16 = maximum precision)
+                  scrollEventThrottle={16}
+
+                  // onScroll: Fires a callback function whenever the user scrolls the view
+                  onScroll={(event) => {
+                    console.log('Scroll X Position:', event.nativeEvent.contentOffset.x);
+                  }}
+
+                  // contentContainerStyle: Applies styling directly to the scrollable wrapper instead of the outer frame
+                  contentContainerStyle={styles.scrollContainer}
+          >
+            <View style={[styles.slide, { backgroundColor: '#ffadad' }]}>
+              <Text style={styles.text}>Slide 1</Text>
+            </View>
+            <View style={[styles.slide, { backgroundColor: '#ffd6a5' }]}>
+              <Text style={styles.text}>Slide 2</Text>
+            </View>
+          </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    alignItems: 'center',
+  },
+  slide: {
+    width: width,
+    height: 200,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  image: {
-    width: width,
-    height: height / 2,
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
-
-export default ZoomableImage;
 ```
 - The _ScrollView_ works best to present a small number of things of a limited size. 
   All the elements and views of a ScrollView are rendered, even if they are not currently shown on the screen. 
   If you have a long list of items which cannot fit on the screen, you should use a `FlatList` instead
+
+### FlateList
+- A highly optimized list component that only renders the items currently visible on the screen
 - Think of `FlatList` as a "smart" list. Instead of loading 1,000 items at once and slowing down the phone, 
   it only loads the items you can actually see on the screen.
 - **The Two Must-Have Props**
@@ -252,43 +299,47 @@ export default ZoomableImage;
   
 ```javascript
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+
+const DATA = [
+  { id: '1', title: 'Note One' },
+  { id: '2', title: 'Note Two' },
+  { id: '3', title: 'Note Three' },
+];
+
+export default function FlatListExample() {
+  return (
+          <FlatList
+                  // data: The primary array of items you intend to pass into the list
+                  data={DATA}
+
+                  // renderItem: Takes an individual element from the data array and converts it into a visual UI node
+                  renderItem={({ item }) => (
+                          <View style={styles.card}>
+                            <Text>{item.title}</Text>
+                          </View>
+                  )}
+
+                  // keyExtractor: Extracts a unique string key for each item, allowing React to track updates efficiently
+                  keyExtractor={(item) => item.id}
+
+                  // ListHeaderComponent: Renders a static header element at the very top of your list
+                  ListHeaderComponent={<Text style={styles.header}>My Dynamic List</Text>}
+
+                  // ItemSeparatorComponent: Renders a component between each row (but not at the top or bottom)
+                  ItemSeparatorComponent={() => <View style={styles.separator} />}
+
+                  // initialNumToRender: Dictates how many items are loaded initially on screen mount to save memory
+                  initialNumToRender={10}
+          />
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 22,
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
+  header: { fontSize: 20, fontWeight: 'bold', padding: 10 },
+  card: { padding: 20, backgroundColor: '#fff' },
+  separator: { height: 1, backgroundColor: '#eee' },
 });
-
-const FlatListBasics = () => {
-  return (
-          <View style={styles.container}>
-            <FlatList
-                    data={[
-                      {key: 'Devin'},
-                      {key: 'Dan'},
-                      {key: 'Dominic'},
-                      {key: 'Jackson'},
-                      {key: 'James'},
-                      {key: 'Joel'},
-                      {key: 'John'},
-                      {key: 'Jillian'},
-                      {key: 'Jimmy'},
-                      {key: 'Julie'},
-                    ]}
-                    renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
-            />
-          </View>
-  );
-};
-
-export default FlatListBasics
 ```
 - If you want to render a set of data broken into logical sections, maybe with section headers, similar to UITableView on iOS, then a SectionList is the way to go.
 ```javascript
@@ -347,6 +398,193 @@ const SectionListBasics = () => {
 
 export default SectionListBasics;
 ```
+### Switch
+- A visual toggle button that goes left/right or changes color to represent an "On" or "Off" state.
+- **When to use:** Perfect for binary preferences, like toggling your Notes app between Light Mode and Dark Mode.
+```javascript
+import React, { useState } from 'react';
+import { View, Text, Switch, StyleSheet } from 'react-native';
+
+export default function SwitchExample() {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      <Text>Toggle Option State:</Text>
+      <Switch
+        // trackColor: Customizes background track color for both the 'false' (off) and 'true' (on) states
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+        
+        // thumbColor: Colors the circular button toggle indicator depending on the active state
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        
+        // ios_backgroundColor: Sets a fallback background color specifically for iOS devices
+        ios_backgroundColor="#3e3e3e"
+        
+        // onValueChange: A callback function executed when the user toggles the switch back and forth
+        onValueChange={(newValue) => setIsEnabled(newValue)}
+        
+        // value: The current underlying boolean value reflecting the switch state
+        value={isEnabled}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 20 },
+});
+```
+
+### KeyboardAvoidingView
+- A smart wrapper that automatically moves your text inputs out of the way when the phone's software keyboard slides up.
+- Essential for screens where users type long notes, ensuring the keyboard doesn't cover up the text input field.
+```javascript
+import React from 'react';
+import { KeyboardAvoidingView, TextInput, StyleSheet, Platform, View } from 'react-native';
+
+export default function KeyboardAvoidingExample() {
+  return (
+    <KeyboardAvoidingView
+      // behavior: Adjusts the layout strategy based on OS ('padding' is preferred for iOS; 'height' or omission for Android)
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      
+      // keyboardVerticalOffset: The distance between the top of the user screen and the React Native view layout
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      
+      style={styles.container}
+    >
+      <View style={styles.inner}>
+        <TextInput 
+          placeholder="Tap here to bring up the keyboard..." 
+          style={styles.input} 
+        />
+      </View>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  inner: { flex: 1, justifyContent: 'flex-end', padding: 20 },
+  input: { height: 50, borderColor: '#ccc', borderWidth: 1, borderRadius: 8, padding: 10 },
+});
+```
+### SafeAreaView
+- A built-in container that automatically adds spacing to your app so content doesn't get cut off by phone notches, 
+  camera holes, or status bars.
+- Typically wrapped around the very top level of your screen layout so your headers don't hide behind the iPhone notch.
+
+### SafeAreaProvider
+- (These require the `react-native-safe-area-context` library)
+- A top-level wrapper that measures the exact physical boundaries, screen notches, and safe zones of the device.
+- You must wrap your entire root App component in this exactly once so the safe area hooks work properly inside your screens
+
+### Utilities & Hooks
+1. **StyleSheet**
+- A tool that allows you to define all your visual styles (colors, layout rules, margins) using structured JavaScript objects.
+- Used to keep code organised.
+
+2. **Platform**
+- An API that detects whether the app is running on an Android device, an iOS device, or the Web.
+- Essential when you need to apply different behavior or styles specifically for Android vs. iOS (like adjusting keyboard padding offsets)
+
+3. **useColorScheme**
+- A React hook that asks the device system, "Is the user currently using Dark Mode or Light Mode?"
+- Used to automatically flip your background and text colors to match the user's system preference.
+```javascript
+import React from 'react';
+import { View, Text, StyleSheet, Platform, useColorScheme } from 'react-native';
+
+export default function PlatformAndThemeExample() {
+  // useColorScheme: Hook returns 'light', 'dark', or null based on the device's system settings
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+
+  return (
+    <View style={[styles.container, isDarkMode ? styles.darkBg : styles.lightBg]}>
+      {/* Platform.OS: Detects current operating system environment ('ios', 'android', or 'web') */}
+      <Text style={isDarkMode ? styles.darkText : styles.lightText}>
+        Operating System: {Platform.OS.toUpperCase()}
+      </Text>
+      
+      {/* Platform.Version: Fetches system API version levels (e.g., Android API 34 or iOS 17) */}
+      <Text style={isDarkMode ? styles.darkText : styles.lightText}>
+        OS Version Level: {Platform.Version}
+      </Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    // Platform.select: Returns a specific key value evaluated dynamically based on device platform
+    borderRadius: Platform.select({ ios: 10, android: 5, default: 0 }),
+  },
+  lightBg: { backgroundColor: '#fff' },
+  darkBg: { backgroundColor: '#333' },
+  lightText: { color: '#000' },
+  darkText: { color: '#fff' },
+});
+```
+4. **useSafeAreaInsets**
+- A hook that gives you the exact pixel dimensions of the top notch, bottom home bar, and side margins.
+- Used when you want precise layout control. Instead of using `SafeAreaView`, 
+  you can use standard `<View>` components and apply padding dynamically based on these inset numbers
+ 
+```javascript
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+// import { SafeAreaView } from 'react-native'; // Alternative raw block component
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+function HomeScreenLayout() {
+  // useSafeAreaInsets: Hook returns padding dimensions required for top, bottom, left, and right safe boundaries
+  const insets = useSafeAreaInsets();
+
+  return (
+    // We apply top and bottom inset spacing using standard component paddings dynamically
+    <View style={[styles.mainView, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <Text>This text is safely positioned below any phone camera notches or status bars.</Text>
+    </View>
+  );
+}
+
+export default function App() {
+  return (
+    // SafeAreaProvider: Must wrap the entire top root tree once to measure physical screen bezels
+    <SafeAreaProvider>
+      <HomeScreenLayout />
+    </SafeAreaProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  mainView: { flex: 1, backgroundColor: '#f5f5f5', paddingHorizontal: 20 },
+});
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Platform-Specific Code
 - If we want to implement separate visual components for Android and iOS. 
@@ -414,4 +652,11 @@ const styles = StyleSheet.create({
 
 
 
+### SafeAreaView
+- In react-native `safeAreaView` is depresated, means recommended to not use.
+- If we use it some how it only runs on IOS(Above 11 version)
+- Therefore, we it from `react-native-safe-area-context`, already installed by expo dependency.
+- if we don't want to use this, then use one hook `useSafeAreaInsets()`
+
+### StyleSheet
 
