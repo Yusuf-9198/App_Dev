@@ -25,7 +25,7 @@ my-notes-app/
 ├── app.json              # ⚙️ Application Manifest (Native build instructions)
 ├── package.json          # 📦 Package dependencies list & automation script profiles
 └── tsconfig.json         # 🛠️ TypeScript strict evaluation constraints
-
+```
 ## Components
 - **Core Components**
 
