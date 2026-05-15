@@ -474,6 +474,12 @@ const styles = StyleSheet.create({
 - A built-in container that automatically adds spacing to your app so content doesn't get cut off by phone notches, 
   camera holes, or status bars.
 - Typically wrapped around the very top level of your screen layout so your headers don't hide behind the iPhone notch.
+- In react-native `safeAreaView` is depresated, means recommended to not use.
+- If we use it some how it only runs on IOS(Above 11 version)
+- Therefore, we it from `react-native-safe-area-context`, already installed by expo dependency.
+- if we don't want to use this, then use one hook `useSafeAreaInsets()`
+
+
 
 ### SafeAreaProvider
 - (These require the `react-native-safe-area-context` library)
@@ -567,25 +573,6 @@ const styles = StyleSheet.create({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Platform-Specific Code
 - If we want to implement separate visual components for Android and iOS. 
 - **React Native provides two ways to organize your code and separate it by platform:**
@@ -650,13 +637,4 @@ const styles = StyleSheet.create({
   - example ` BigButton.ios.js
              BigButton.android.js`
 
-
-
-### SafeAreaView
-- In react-native `safeAreaView` is depresated, means recommended to not use.
-- If we use it some how it only runs on IOS(Above 11 version)
-- Therefore, we it from `react-native-safe-area-context`, already installed by expo dependency.
-- if we don't want to use this, then use one hook `useSafeAreaInsets()`
-
-### StyleSheet
 
