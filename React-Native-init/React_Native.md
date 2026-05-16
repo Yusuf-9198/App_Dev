@@ -570,6 +570,150 @@ const styles = StyleSheet.create({
   mainView: { flex: 1, backgroundColor: '#f5f5f5', paddingHorizontal: 20 },
 });
 ```
+### React Navigation
+- Read Official doc.
+- switching between multiple screens , Not in `React Native`
+- we use another library `React Nagvigation`
+- it provides routing logic.
+- Installation
+  - `npx create-expo-app -t blank-typescript@sdk-55`  OR
+  - `bunx create-expo-app -t blank-typescript@sdk-55
+- To run
+  - `npx expo start`
+- To use react navigation, we have to install so libraries
+  - `npm add @react-navigation/native`  `bun add @react-navigation/native`
+  - now, then `npx expo install react-native-screens react-native-safe-area-context`
+- when you have to use react navigation, we have setup `navigator`
+- **Navigator**
+  - which screen is shown
+  - how back works
+  - Header
+- **_Static Navigation_** :- Screens are declared in one config object, no need to load dynamically, good for small app, consistence arcitecture
+```javascript
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { createStaticNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+
+const RootStack = createNativeStackNavigator({
+  screens: {
+    Home: HomeScreen,
+  },
+});
+
+const Navigation = createStaticNavigation(RootStack);
+
+export default function App() {
+  return <Navigation />;
+}
+```
+- **_Dynamic Navigation_** :- 
+-  then install `npm install @react-navigation/native-stack`
+-  then `npm install @react-navigation/elements`
+```javascript
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+function HomeScreen() {
+  return (
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>Home Screen</Text>
+          </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+function MyStack() {
+  return (
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen}
+                          options={{
+                              title:"Home",
+                            headerStyle: {
+                                  backgroundColor:"#111827"
+                            },
+                            headerTintColor:"#fff",
+                            headerTitleStyle:{
+                                  fontWeight:"bold"
+                            }
+                          }}
+            />
+          </Stack.Navigator>
+  );
+}
+
+export default function DynamicStackNavigator() {
+  return (
+          <NavigationContainer>
+            <RootStack />
+          </NavigationContainer>
+  );
+}
+
+```
+#### Comparesion between stack navigator and native Stack navigator
+
+
+
+#### Types of Navigators
+1. **Stack navigator**
+- screens are Stacked, every new is stacked into old screen.
+- use when screen to screen navigation, want back button, Authentication flow
+- Run commands `npm install @react-navigation/stack`
+- then `npx expo install react-native-gesture-handler @react-native-masked-view/masked-view`
+```javascript
+import { createStackNavigator } from '@react-navigation/stack';
+
+const MyStack = createStackNavigator({
+screens: {
+Home: HomeScreen,
+Profile: ProfileScreen,
+},
+});
+```
+
+
+
+
+2. **Tab Navigator**
+- Like instagrame home, search , message, profile
+3. **Drawer Navigator**
+- more like
+
+#### Transaction between one screen to another
+1. By Button Components `<Button screen={"Details"}> go to Detail screen</Button>`
+2. by Link components `<Link screen={"Details"}> go to Detail screen</Link>`
+3. Using Hooks ` useNavigation()`
+   - In Button you have to write `<Button tiltle='go thet screen' onPress={()=> navigation.navigate("That Screen")> go to Detail screen</Button>`
+   - OR `<Button tiltle='go thet screen' onPress={()=> navigation.popTo("That Screen")> go to Detail screen</Button>` 
+   - Going directly to the top(First) page `<Button tiltle='go thet screen' onPress={()=> navigation.popToTop("That Screen")> go to Detail screen</Button>`
+   - one more, replace current screen user can't go prev screen, `Button tiltle='go thet screen' onPress={()=> navigation.replace("That Screen")> go to Detail screen</Button>`
+   - going back screen `goBack()`
+   - `push()` Always add a new instance
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
