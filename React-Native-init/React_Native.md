@@ -71,8 +71,8 @@ export default Cat;
 import React, {useState} from 'react';
 import {Button, Text, View} from 'react-native';
 
-type CatProps = {
-  name: string;
+const CatProps = {
+  name: string,
 };
 
 const Cat = (props: CatProps) => {
@@ -688,8 +688,138 @@ Profile: ProfileScreen,
 
 2. **Tab Navigator**
 - Like instagrame home, search , message, profile
+- run cammand `npm install @react-navigation/bottom-tabs`
+```javascript
+// Dynanmic Tab navigator
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import { useNavigation, NavigationContainer } from '@react-navigation/native';
+import { Button } from '@react-navigation/elements';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+function HomeScreen() {
+  const navigation = useNavigation();
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button onPress={() => navigation.navigate('Profile')}>
+        Go to Profile
+      </Button>
+    </View>
+  );
+}
+
+function ProfileScreen() {
+  const navigation = useNavigation();
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Profile Screen</Text>
+      <Button onPress={() => navigation.navigate('Home')}>Go to Home</Button>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator initialRouteName = 'ProfileScreen' // it make profile page initial
+                   screenOptions={{headerShown:false}}
+    > 
+      <Tab.Screen name="Home" component={HomeScreen} 
+                  options={{
+                      title:"Dashboard",
+                      tabBarLabel:"Home" // tab name
+                  }}
+      />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyTabs />
+    </NavigationContainer>
+  );
+}  
+```
+- how to insert icons `npx expo install @expo/vector-icons`
+  ```javascript
+  //  <Tab.Navigator initialRouteName = 'ProfileScreen' // it make profile page initial
+  //                  screenOptions={{
+  //
+  // ({route}) => ({
+  //     tabBarIcon:({focused , color, size})=>{
+  // const icon = route.name === "Home"? focused? "home":'home-outline'  : route.name = "search"
+  //          ? focused ? "search" : "search-outline" : focused ? "person" : "person-outline"
+  // return <Ionicons name ={icon} size ={size} color={color}/>
+  //    
+  // }
+  //
+  // })
+  // }}
+  //   > </Tab.Navigator>
+   ```
+
+
+
 3. **Drawer Navigator**
 - more like
+- run cammand `npm install @react-navigation/drawer`
+- then `npx expo install react-native-gesture-handler react-native-reanimated react-native-worklets`
+```javascript
+// Static 
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import {
+  createStaticNavigation,
+  useNavigation,
+} from '@react-navigation/native';
+import { Button } from '@react-navigation/elements';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+function HomeScreen() {
+  const navigation = useNavigation();
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button onPress={() => navigation.navigate('Profile')}>
+        Go to Profile
+      </Button>
+    </View>
+  );
+}
+
+function ProfileScreen() {
+  const navigation = useNavigation();
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Profile Screen</Text>
+      <Button onPress={() => navigation.navigate('Home')}>Go to Home</Button>
+    </View>
+  );
+}
+
+const MyDrawer = createDrawerNavigator({
+  screens: {
+    Home: HomeScreen,
+    Profile: ProfileScreen,
+  },
+});
+
+const Navigation = createStaticNavigation(MyDrawer);
+
+export default function App() {
+  return <Navigation />;
+}
+```
+
 
 #### Transaction between one screen to another
 1. By Button Components `<Button screen={"Details"}> go to Detail screen</Button>`
