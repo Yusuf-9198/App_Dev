@@ -572,8 +572,8 @@ const styles = StyleSheet.create({
 ```
 ### React Navigation
 - Read Official doc.
-- switching between multiple screens , Not in `React Native`
-- we use another library `React Nagvigation`
+- switching between multiple screens , Not in `react-native`
+- we use another library `react-nagvigation`
 - it provides routing logic.
 - Installation
   - `npx create-expo-app -t blank-typescript@sdk-55`  OR
@@ -582,12 +582,26 @@ const styles = StyleSheet.create({
   - `npx expo start`
 - To use react navigation, we have to install so libraries
   - `npm add @react-navigation/native`  `bun add @react-navigation/native`
+  - Next, install the dependencies used by most navigators: `react-native-screens` and `react-native-safe-area-context`.
   - now, then `npx expo install react-native-screens react-native-safe-area-context`
 - when you have to use react navigation, we have setup `navigator`
 - **Navigator**
-  - which screen is shown
-  - how back works
-  - Header
+  - Navigators handle transitions between screens and provide UI such as headers, tab bars, etc.
+  - A `_Navigator_` is React component that decides how to render the screens you have defined.
+  - It contains Screen elements as its children to define the configuration for screens.
+  - `NavigationContainer` is a component which manages our navigation tree and contains the navigation state. This component must wrap all navigators structure.
+  - Usually, we'd render this component at the root of our app, which is usually the component exported from `App.js`.
+  - ```javascript
+    function App() {
+    return (
+    <NavigationContainer>
+    <Stack.Navigator> //  This is a Navigator
+    <Stack.Screen name="Home" component={HomeScreen} />
+    </Stack.Navigator>
+    </NavigationContainer>
+    );
+    }
+    ```
 - **_Static Navigation_** :- Screens are declared in one config object, no need to load dynamically, good for small app, consistence arcitecture
 ```javascript
 import * as React from 'react';
