@@ -893,19 +893,78 @@ export default function App() {
 
 #### Expo Router
 - `https://docs.expo.dev/router/introduction/`
+- **_Static Route_**
 - Anything in app(any folder) treat as route and anything outside folder treat as components.
   this is called file based routing
 - index.tsx --> /
 - profile/index.tsx --> /profile {we can make more files in it}, /profile/display.tsx --> /profile/display
 - profile.tsx --> /profile
+- **_Dynamic Route_**
+- A route that accept a variable value.
+- like Instagrame ko kese pata chalta hai konse ID login hai abhi
+ we use Hook, name must be in form of [File_Name], `const {File_Nmae} = useLocalSearchParam()`
+- `<Link href={"/1254"}> go to user page</Link>`
+- if expo routes finds more than one dynamic route, jo phele dekhega us pr redirect ho jayega.
+- how to Aviod?, we use nested route means hr route ko alag alag folder me daldo. then /user/[username] `herf ={"/user/username"}`
+- We can also make Nested dynamic route within dyinamic route,
+ /user/[userID]/[Username] -> `herf ={"/user/9198/yusuf"}`
+ => hook is used this manner `const {userID, Usrrname} = useLocalSearchParam()`
+- **_catch-all_** : If we want to use many nested Dynamic routes, Make folder /doc/[...slug]
+- `herf ={"/doc/9198/yusuf/beig"}`
+- `console.log(slug)` => ["9198","yusuf", "beig"]
+- `_Layout.tsx` : wrapped around siblings, sharing same layout to every sibling.
+- if we make folder name like '(Folder_name)', so we can access inner file only by writting `/innerFile.txt`
+
+#### Stack In Expo Router
+
+```javascript
+import {Stack, stack} from "expo-router";
+
+export default function RootLayout() {
+  return (
+          <Stack>
+            <Stack.Protected guard ={false}> // now screens are not accessable 
+            <Stack.Screen name"index"/>
+            <Stack.Screen name"about"/>
+            </Stack.Protected>        
+          </Stack>
+  )
+}
+```
+#### JS tab in expo 
+
+#### Native tabs in expo router
+- ``
+```javascript
+import { NativeTabs } from 'expo-router/unstable-native-tabs';
+
+export default function TabLayout() {
+  return (
+    <NativeTabs>
+      <NativeTabs.Trigger name="index">
+        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="house.fill" md="home" /> // sf for IOS and md for android
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="settings">
+        <NativeTabs.Trigger.Icon sf="gear" md="settings" />
+        <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
+  );
+}
+
+```
+#### Custom Tab in expo router
+- **State** :- have access of all available tabs and current tabs.
+- **descriptor** :- screen options
+- **navigation** :- move between screens/ tabs
 - 
+```javascript
 
+```
 
-
-
-
-
-
+#### Drawer in expo routerr
+- run `npx expo install react-native-reanimated react-native-worklets react-native-gesture-handler`
 
 
 
