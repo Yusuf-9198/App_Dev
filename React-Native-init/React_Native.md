@@ -602,7 +602,14 @@ const styles = StyleSheet.create({
     );
     }
     ```
-- **_Static Navigation_** :- Screens are declared in one config object, no need to load dynamically, good for small app, consistence arcitecture
+- **_Static Navigation_** :- Screens are declared in one config object, no need to load dynamically, good for small app, consistence arcitecture.
+- then install `npm install @react-navigation/native-stack`
+-  then `npm install @react-navigation/elements`
+- We can create a native stack navigator by using the `createNativeStackNavigator` function:
+- `createStaticNavigation` It takes your static layout configuration (the stack you created above) and automatically turns it into a valid React component that manages your app's navigation state.
+- `createStaticNavigation` takes the navigator and returns a component to render in the app. It should only be called once, typically at the root of your app (e.g., in App.tsx):
+- To specify screen-specific options, we can specify an `options` property, and for common options, we can specify `screenOptions`.
+
 ```javascript
 import * as React from 'react';
 import { View, Text } from 'react-native';
@@ -618,8 +625,18 @@ function HomeScreen() {
 }
 
 const RootStack = createNativeStackNavigator({
+  screenOptions: {
+    headerStyle: { backgroundColor: 'tomato' },
+  },
   screens: {
-    Home: HomeScreen,
+    Home: {
+      screen: HomeScreen,
+      options: {
+        title: 'Overview', // Top bar will display "Overview" instead of "Home"
+        headerStyle: { backgroundColor: '#f4511e' }, // Changes header color to orange
+        headerTintColor: '#fff', // Changes header text color to white
+      },
+    },
   },
 });
 
@@ -629,6 +646,33 @@ export default function App() {
   return <Navigation />;
 }
 ```
+- _Passing Additional Data_
+  - To pass additional data to a screen, use `.with` to wrap the navigator with React context to pass data to the screens:
+```javascript
+const ExtraDataContext = React.createContext();
+
+function HomeScreen() {
+  const extraData = React.useContext(ExtraDataContext);
+
+  return <Text>{extraData}</Text>;
+}
+
+const RootStack = createNativeStackNavigator({
+  screens: {
+    Home: createNativeStackScreen({
+      screen: HomeScreen,
+    }),
+  },
+}).with(({ Navigator }) => {
+  return (
+    <ExtraDataContext.Provider value={someData}>
+      <Navigator />
+    </ExtraDataContext.Provider>
+  );
+});
+``` 
+
+
 - **_Dynamic Navigation_** :- 
 -  then install `npm install @react-navigation/native-stack`
 -  then `npm install @react-navigation/elements`
@@ -847,7 +891,14 @@ export default function App() {
    - `push()` Always add a new instance
 
 
-
+#### Expo Router
+- `https://docs.expo.dev/router/introduction/`
+- Anything in app(any folder) treat as route and anything outside folder treat as components.
+  this is called file based routing
+- index.tsx --> /
+- profile/index.tsx --> /profile {we can make more files in it}, /profile/display.tsx --> /profile/display
+- profile.tsx --> /profile
+- 
 
 
 
