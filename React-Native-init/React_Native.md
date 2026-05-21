@@ -891,8 +891,23 @@ export default function App() {
    - `push()` Always add a new instance
 
 
-#### Expo Router
+### Expo Router
 - `https://docs.expo.dev/router/introduction/`
+- it is basically built on top of React-aNative Navigation, Expo Router navigation is truly native and platform-optimized by default. 
+- Expo Router is a file-based router for React Native and web applications.
+- **FileBased Routing** :- File-based routing means that your folders and files inside your project determine your app's screens automatically.
+  Instead of writing javascript configuration code to map a component to a screen name,
+ the computer simply looks at your project directory structure to figure out where things are.
+- If you create a file named app/edit.tsx, Expo Router automatically builds a navigation pathway for you. If you delete the file, the screen disappears from the app.
+- It works almost every Platform
+- **Shareable**: Every screen in your app is automatically deep linkable, making any route in your app shareable with links
+- Offline-first: If a user opens your app in an airplane or a tunnel with no cellular data, the routing logic doesn't break.
+  The app’s screens are saved directly on the device hardware and update automatically when internet access returns.
+- **_Optimized Performance:_**
+   -In **Development**: It utilizes "deferred bundling," meaning it only compiles the screen you are currently looking at on your emulator, keeping your computer running fast.
+   -In **Production**: It uses "`lazy-evaluation`," meaning your app's bundle size stays small because code is only executed when a user opens that specific screen.
+- _**Discoverable (SEO):**_ Because the app can render as actual static pages on the web, search engines like Google can crawl through your app content and index it, allowing users to find your app screens through a standard Google search.
+
 - **_Static Route_**
 - Anything in app(any folder) treat as route and anything outside folder treat as components.
   this is called file based routing
