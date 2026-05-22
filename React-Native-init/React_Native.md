@@ -572,6 +572,7 @@ const styles = StyleSheet.create({
 ```
 ### React Navigation
 - Read Official doc.
+**_- routing is the mechanism that manages your application's screen stack while maintaining local state and user context.**_
 - switching between multiple screens , Not in `react-native`
 - we use another library `react-nagvigation`
 - it provides routing logic.
@@ -929,6 +930,9 @@ export default function App() {
 - `console.log(slug)` => ["9198","yusuf", "beig"]
 - `_Layout.tsx` : wrapped around siblings, sharing same layout to every sibling.
 - if we make folder name like '(Folder_name)', so we can access inner file only by writting `/innerFile.txt`
+
+### Expo Router vs React Navigation - Which One Should You Use in 2026?
+- 
 
 #### Stack In Expo Router
 
