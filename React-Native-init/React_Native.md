@@ -987,8 +987,50 @@ export default function TabLayout() {
 
 
 
+### Networking And Backend Integration
+- API, Rest API
+- HTTP {
+  - GET
+  - POST
+  - PUT
+  - PATCH
+  - DELETE }
+- go freeAPi website
+```javascript
+// fetchind data
+// useEffect(() => {
+//     asyn function fetchUserData(){
+//         try{
+//             const re = await fetch("curl https://api.freeapi.app/api/v1/public/quotes/random")
+//             const data = await re.json();
+//             setData(data)
+//         }catch (e) {
+//             console.log(e)
+//         }
+//     }
+//   fetchUserData()
+// }, []);
+```
+#### expo api routes
+- File naming convention file-name + api.ts
+```javascript
+export function GET(request: Request) {
+  return Response.json({ hello: 'world' });
+}
+// then  on app.json
+// {
+//     "web": {
+//     "output": "server"
+// }
+// }
+```
+- turdo, neon, supabase are DataBase
+- Tueso(visit website)
+- `npm add @libsql/client`
+- make file `.env`
+- make lib folder in src,then db.ts
 
-
+### Data storage And Offline Support
 
 ### Platform-Specific Code
 - If we want to implement separate visual components for Android and iOS. 
