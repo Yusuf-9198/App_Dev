@@ -1,7 +1,7 @@
 /*
 js is a Synchronus and Single threaded type language
 -> it means execute one line of code at a time, 
-each operation waits for the oneto complete before executing
+each operation waits for the one to complete before executing
 
 ********javascript execution context *****
 =>js hamare code do phase me run karyte hai, phele gobal execution context banta hai ,

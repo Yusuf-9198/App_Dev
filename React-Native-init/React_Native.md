@@ -1024,13 +1024,17 @@ export function GET(request: Request) {
 // }
 // }
 ```
-- turdo, neon, supabase are DataBase
-- Tueso(visit website)
+- turso, neon, supabase are DataBase
+- Turso(visit website)
 - `npm add @libsql/client`
 - make file `.env`
 - make lib folder in src,then db.ts
 
-### Data storage And Offline Support
+### Data storage & Offline Support
+- Official link https://react-native-async-storage.github.io/2.0/Usage/
+- Async Storage is asynchronous, unencrypted, persistent, key-value storage for your React Native application.
+- Installation `npm expo install @react-native-async-storage/async-storage`
+
 
 ### Platform-Specific Code
 - If we want to implement separate visual components for Android and iOS. 
