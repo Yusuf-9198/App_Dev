@@ -988,28 +988,249 @@ export default function TabLayout() {
 
 
 ### Networking And Backend Integration
-- API, Rest API
-- HTTP {
-  - GET
-  - POST
-  - PUT
-  - PATCH
-  - DELETE }
+- **API(Application Programming Interface)** :-It passes your request from your mobile app to a backend database server, and then returns the data back to your screen.
+- **REST API** :- A REST API is a popular design style for these servers that uses standard HTTP Methods to determine what action to perform:
+
+    - **GET:** Retrieve or download information from a server (e.g., reading your notes list).
+
+    - **POST:** Send new information to a server to create something new (e.g., publishing a brand new note).
+
+    - **PUT:** Replace an existing resource entirely with updated information.
+
+    - **PATCH:** Modify only a small part of an existing resource (e.g., toggling a note's background color without altering the text content).
+
+    - **DELETE:** Permanently remove a specific piece of information from the backend database server.
+```tsx
+// src/lib/db.ts
+import { createClient } from "@libsql/client";
+
+// Initialize and export the global database client instance using your strict environment variables
+export const db = createClient({
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+});
+
+// app/users+api.ts
+import { db } from "@/lib/db";
+
+// 1. GET: Fetches the entire directory dataset table rows
+export async function GET() {
+    try {
+        const result = await db.execute({
+            sql: 'SELECT * FROM users_data'
+        });
+        return Response.json(result.rows);
+    } catch (error) {
+        return Response.json({ error: "Failed to fetch users" }, { status: 500 });
+    }
+}
+
+// 2. POST: Injects a new user entity row safely using query argument binding structures
+export async function POST(request: Request) {
+    try {
+        const { name, email } = await request.json();
+
+        if (!name || !email) {
+            return Response.json({ error: "Name and Email are required" }, { status: 400 });
+        }
+
+        const result = await db.execute({
+            sql: 'INSERT INTO users_data (name, email) VALUES (?, ?)',
+            args: [name, email]
+        });
+
+        return Response.json(
+            { id: result.lastInsertRowid?.toString(), name, email },
+            { status: 201 }
+        );
+    } catch (error) {
+        return Response.json({ error: "Failed to create user" }, { status: 500 });
+    }
+}
+// app/users/[id]+api.ts
+import { db } from "@/lib/db";
+
+type Ctx = { params: { id: string } };
+
+// 1. GET: Identifies and yields an individual item row based on a specific id slug
+export async function GET(_req: Request, { params }: Ctx) {
+    try {
+        const result = await db.execute({
+            sql: 'SELECT * FROM users_data WHERE id = ?',
+            args: [params.id]
+        });
+
+        if (result.rows.length === 0) {
+            return Response.json({ error: "User not found" }, { status: 404 });
+        }
+
+        return Response.json(result.rows[0]);
+    } catch (error) {
+        return Response.json({ error: "Failed to fetch user" }, { status: 500 });
+    }
+}
+
+// 2. PATCH: Modifies field subsets on an active item row dynamically
+export async function PATCH(request: Request, { params }: Ctx) {
+    try {
+        const { name, email } = await request.json();
+
+        if (!name && !email) {
+            return Response.json({ error: "Provide at least a name or email to modify" }, { status: 400 });
+        }
+
+        if (name && email) {
+            await db.execute({
+                sql: 'UPDATE users_data SET name = ?, email = ? WHERE id = ?',
+                args: [name, email, params.id]
+            });
+        } else if (name) {
+            await db.execute({
+                sql: 'UPDATE users_data SET name = ? WHERE id = ?',
+                args: [name, params.id]
+            });
+        } else if (email) {
+            await db.execute({
+                sql: 'UPDATE users_data SET email = ? WHERE id = ?',
+                args: [email, params.id]
+            });
+        }
+
+        return Response.json({ success: true, message: `User record ${params.id} updated successfully` });
+    } catch (error) {
+        return Response.json({ error: "Failed to update user parameters" }, { status: 500 });
+    }
+}
+
+// 3. DELETE: Drop a single user record row completely out of the table matrix
+export async function DELETE(_req: Request, { params }: Ctx) {
+    try {
+        const result = await db.execute({
+            sql: 'DELETE FROM users_data WHERE id = ?',
+            args: [params.id]
+        });
+
+        if (result.rowsAffected === 0) {
+            return Response.json({ error: "Target user row does not exist" }, { status: 404 });
+        }
+
+        return Response.json({ success: true, message: `User record ${params.id} purged successfully` });
+    } catch (error) {
+        return Response.json({ error: "Failed to delete user record" }, { status: 500 });
+    }
+}
+// app/index.tsx
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from "react-native";
+
+type UserRecord = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+export default function Index() {
+    const [users, setUsers] = useState<UserRecord[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        async function fetchUserData() {
+            try {
+                // Fetches data sets securely straight from your newly setup Expo user API system
+                const res = await fetch("https://api.freeapi.app/api/v1/public/randomusers?page=1&limit=10");
+                const jsonWrapper = await res.json();
+
+                if (jsonWrapper?.data?.data) {
+                    setUsers(jsonWrapper.data.data);
+                }
+            } catch (error) {
+                console.error("Network interface connection failure error log:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchUserData();
+    }, []);
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#4f46e5" style={styles.center} />;
+    }
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.headerTitle}>Network Registry Board</Text>
+            <FlatList
+                data={users}
+                keyExtractor={(item, index) => item.id?.toString() || index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.userCard}>
+                        <Text style={styles.nameLabel}>{item.name || "Anonymous Member"}</Text>
+                        <Text style={styles.emailLabel}>{item.email}</Text>
+                    </View>
+                )}
+            />
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: "#f8fafc", paddingTop: 40 },
+    center: { flex: 1, justifyContent: "center", alignItems: "center" },
+    headerTitle: { fontSize: 18, fontWeight: "700", color: "#0f172a", textAlign: "center", marginBottom: 15 },
+    userCard: { padding: 16, backgroundColor: "#ffffff", borderRadius: 8, marginHorizontal: 16, marginVertical: 6, elevation: 1 },
+    nameLabel: { fontSize: 15, fontWeight: "600", color: "#1e293b" },
+    emailLabel: { fontSize: 13, color: "#64748b", marginTop: 2 },
+});
+```
+
+
 - go freeAPi website
 ```javascript
-// fetchind data
-// useEffect(() => {
-//     asyn function fetchUserData(){
-//         try{
-//             const re = await fetch("curl https://api.freeapi.app/api/v1/public/quotes/random")
-//             const data = await re.json();
-//             setData(data)
-//         }catch (e) {
-//             console.log(e)
-//         }
-//     }
-//   fetchUserData()
-// }, []);
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+
+export default function RandomQuoteScreen() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Define an asynchronous function inside your hook layout
+    async function fetchUserData() {
+      try {
+        // Corrected: Pass the raw endpoint URL directly without the "curl" terminal command
+        const response = await fetch("https://api.freeapi.app/api/v1/public/quotes/random");
+        const jsonResult = await response.json();
+        
+        // Save the parsed data to our local component state
+        setData(jsonResult.data);
+      } catch (error) {
+        console.error("Failed to collect API dataset:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchUserData();
+  }, []); // Empty dependency array ensures this execution fires exactly once when the screen mounts
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#4f46e5" style={styles.center} />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.quoteText}>"{data?.content}"</Text>
+      <Text style={styles.authorText}>— {data?.author}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#f8fafc' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  quoteText: { fontSize: 18, fontStyle: 'italic', color: '#0f172a', textAlign: 'center' },
+  authorText: { fontSize: 14, fontWeight: '700', color: '#64748b', marginTop: 10, textAlign: 'center' },
+});
 ```
 #### expo api routes
 - File naming convention file-name + api.ts
