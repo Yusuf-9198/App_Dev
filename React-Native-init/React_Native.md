@@ -1252,6 +1252,8 @@ export function GET(request: Request) {
 - make lib folder in src,then db.ts
 
 ### Data storage & Offline Support
+
+- https://docs.expo.dev/versions/latest/sdk/async-storage/
 - Official link https://react-native-async-storage.github.io/2.0/Usage/
 - Async Storage is asynchronous, unencrypted, persistent, key-value storage for your React Native application.
 - Installation `npm expo install @react-native-async-storage/async-storage`
