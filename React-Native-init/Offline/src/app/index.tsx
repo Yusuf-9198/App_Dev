@@ -4,9 +4,9 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
+  ScrollView
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Index() {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 13,
     letterSpacing: 0.5,
-  },
+  }, 
   outputContainer: {
     marginTop: 20,
     paddingTop: 10,
