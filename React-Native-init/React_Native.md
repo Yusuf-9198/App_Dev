@@ -1494,6 +1494,34 @@ const styles = StyleSheet.create({
 - **LightSensor:-** LightSensor from expo-sensors provides access to the device's light sensor to respond to illuminance changes.
 for andriod only now.
 
+- **MagnetoMeter:-** A library that provides access to the device's magnetometer sensor.
+- Magnetometer from expo-sensors provides access to the device magnetometer sensor(s) to respond to and measure the changes in the magnetic field measured in microtesla (μT).
+- used to build compass, navigation system 
+
+- ***DeviceMotion***
+- **peddometer**
+
+
+## Expo Application Services
+- A suit of cloud/hosted services that handle building releasing ,updating and automating expo and react native apps.
+- *EAS build* , *EAS sublit* , *EAS Update* , *EAS workFlow*
+- **EAS Build:-** EAS Build is a hosted Expo Application Services (EAS) service that builds app binaries (also called standalone apps) for your Expo and React Native projects.
+- **Development Build:-** to build custom verssion of your app.
+- *binary* :- soruce codde --> compilation --> Android/Ios --> install an devices.
+- Apk/AAb , IPA(IOS)
+- *How to make multiple app varients?*
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Platform-Specific Code
 - If we want to implement separate visual components for Android and iOS. 
