@@ -1489,7 +1489,10 @@ const styles = StyleSheet.create({
 - `npx expo install expo-sensors`
 - **AccleroMeter:-** Accelerometer from expo-sensors provides access to the device accelerometer sensor(s) and associated listeners to respond to changes in acceleration in three-dimensional space, meaning any movement or vibration.
 - **Gyroscope:-** (Radians per sec) Gyroscope from expo-sensors provides access to the device's gyroscope sensor to respond to changes in rotation in three-dimensional space. 
-
+- 16ms => 60fps
+- **sensor fusion**
+- **LightSensor:-** LightSensor from expo-sensors provides access to the device's light sensor to respond to illuminance changes.
+for andriod only now.
 
 
 ### Platform-Specific Code
